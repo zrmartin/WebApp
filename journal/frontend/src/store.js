@@ -12,16 +12,23 @@ export const store = new Vuex.Store({
   mutations: {
     setEntries(state, data) {
       state.entries = data;
+    },
+    addEntry(state, data) {
+      state.entries.push(data);
     }
   },
   actions: {
     fetchEntries(context) {
-      axios.get(api + '/journal/entry')
-        .then(function(response) {
-          context.commit('setEntries', response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
+      return new Promise((resolve, reject) => {
+        axios.get(api + '/journal/entry')
+          .then(function (response) {
+            resolve(response);
+            context.commit('setEntries', response.data);
+          })
+          .catch(function (error) {
+            reject(error);
+            console.log(error);
+          })
       })
     }
   }

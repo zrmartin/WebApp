@@ -10,7 +10,6 @@ import { store } from './store'
 import HelloWorld from './components/HelloWorld'
 import CreateEntry from './components/CreateEntry'
 
-
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 

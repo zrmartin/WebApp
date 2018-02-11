@@ -1,7 +1,8 @@
 from django.db import models
 
 class Entry(models.Model):
-    pub_date = models.DateField()
+    pub_date = models.DateField(format("%m/%d/%Y"), unique=True)
+    summary = models.TextField(blank=True, default="You have not written a summary for today yet.")
 
     def __str__(self):
         return str(self.pub_date)

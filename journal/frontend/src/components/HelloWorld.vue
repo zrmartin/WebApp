@@ -16,8 +16,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      entry: ''
+      entry: '',
     }
   },
   methods: {
@@ -27,7 +26,8 @@ export default {
         pub_date: vm.entry,
       })
         .then(function (response) {
-          console.log(response)
+          console.log(response);
+          vm.$store.commit('addEntry', response.data);
         })
         .catch(function (error) {
           console.log(error);
