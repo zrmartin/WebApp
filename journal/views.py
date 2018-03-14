@@ -18,5 +18,11 @@ class EntryDetail(generics.RetrieveUpdateDestroyAPIView):
 class EntryCreate(generics.CreateAPIView):
     serializer_class = EntrySerializer
 
+class EntryUpdate(generics.UpdateAPIView):
+    queryset = Entry.objects.all()
+    serializer_class = EntrySerializer
+    lookup_field = 'pub_date'
+
+
 
 

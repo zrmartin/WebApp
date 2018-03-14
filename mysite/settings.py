@@ -110,9 +110,15 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/Anchorage'
 
-USE_I18N = True
+DATE_FORMAT = 'mdY'
 
-USE_L10N = True
+DATE_INPUT_FORMATS = [
+'%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y'
+]
+
+USE_I18N = False
+
+USE_L10N = False
 
 USE_TZ = True
 

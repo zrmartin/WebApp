@@ -11,6 +11,7 @@ class EntrySerializer(serializers.HyperlinkedModelSerializer):
         fields = ('pub_date', 'summary')
 
 
+
 class ActivitySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Activity

@@ -6,6 +6,8 @@ urlpatterns = [
     path('entry', views.EntryList.as_view()),
     path('entry/<int:pk>', views.EntryDetail.as_view()),
     path('entry/create', views.EntryCreate.as_view()),
+    path('entry/update/<pub_date>', views.EntryUpdate.as_view()),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
