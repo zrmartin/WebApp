@@ -22,6 +22,9 @@ export const store = new Vuex.Store({
     },
     editEntry(state, data) {
       Vue.set(state.entries, data.index, data.updatedEntry);
+    },
+    deleteEntry(state, entry_index) {
+      state.entries.splice(entry_index, 1);
     }
   },
   actions: {

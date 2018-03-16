@@ -3,7 +3,8 @@
     <DateAndSummary v-if="$store.state.entries"
                     :pub_date=getEntryDate()
                     :summary=getEntrySummary(getEntryDate())
-                    v-on:submitEntry="editEntry">
+                    @submitEntry="editEntry"
+                    @deleteEntry="removeEntry">
     </DateAndSummary>
   </div>
 </template>
@@ -18,6 +19,7 @@
     data(){
       let vm = this;
       return {
+        remove: false,
         oldDate: vm.getEntryDate(),
       }
     },
@@ -39,6 +41,22 @@
             vm.error = true;
             vm.error_message = (error.response);
           })
+      },
+      removeEntry(entry) {
+        let vm = this;
+        let store_entry = vm.getEntry(entry.pub_date)[1];
+        let index = this.$store.state.entries.indexOf(store_entry);
+        axios.delete(api + '/journal/entry/delete/' + entry.pub_date, store_entry)
+          .then(response => {
+            console.log(response);
+            vm.$store.commit('deleteEntry', index);
+            vm.$router.push('/journal');
+          })
+          .catch(error => {
+            vm.error = true;
+            vm.error_message = (error.response);
+          })
+
       },
       getEntry(date) {
         let d1 = new Date(date);
@@ -66,7 +84,7 @@
       },
       getEntrySummary(date) {
         return this.getEntry(date)[1].summary;
-      }
+      },
     },
     created () {
       let vm = this;

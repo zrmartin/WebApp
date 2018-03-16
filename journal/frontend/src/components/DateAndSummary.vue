@@ -29,6 +29,13 @@
       </div>
     </div>
 
+    <div class="field is-grouped" v-if="summary">
+      <div class="control">
+        <button class="button is-danger" v-on:click="deleteEntry">Delete</button>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -75,7 +82,14 @@
         vm.$emit('submitEntry', {
           pub_date: vm.date,
           summary: vm.summ});
-      }
+      },
+      deleteEntry() {
+        let vm = this;
+        vm.$emit('deleteEntry', {
+          pub_date: vm.date,
+          summary: vm.summ});
+      },
+
     },
     watch: {
       'date': function() {
