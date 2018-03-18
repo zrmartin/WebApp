@@ -25,7 +25,7 @@
         <button class="button is-link" v-on:click="submitEntry">Submit</button>
       </div>
       <div class="control">
-        <button class="button is-text"><router-link v-bind:to="'/journal'">Cancel</router-link></button>
+        <button class="button is-text"><router-link v-bind:to="'/journal/entries'">Cancel</router-link></button>
       </div>
     </div>
 

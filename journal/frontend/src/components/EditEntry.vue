@@ -35,7 +35,7 @@
           .then(response => {
             console.log(response);
             vm.$store.commit('editEntry', data);
-            vm.$router.push('/journal');
+            vm.$router.push('/journal/entries');
           })
           .catch(error => {
             vm.error = true;
@@ -50,7 +50,7 @@
           .then(response => {
             console.log(response);
             vm.$store.commit('deleteEntry', index);
-            vm.$router.push('/journal');
+            vm.$router.push('/journal/entries');
           })
           .catch(error => {
             vm.error = true;

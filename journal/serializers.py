@@ -1,4 +1,4 @@
-from .models import Entry, Activity
+from .models import Entry, Activity, Concert, Artist
 from rest_framework import serializers
 
 class EntrySerializer(serializers.HyperlinkedModelSerializer):
@@ -10,6 +10,18 @@ class EntrySerializer(serializers.HyperlinkedModelSerializer):
         model = Entry
         fields = ('pub_date', 'summary')
 
+class ConcertSerializer(serializers.HyperlinkedModelSerializer):
+    date = serializers.DateField(format="%m/%d/%Y")
+
+    class Meta:
+        model = Concert
+        fields = ('date', 'venue', 'name', 'notes')
+
+class ArtistSerializer(serializers.HyperlinkedModelSerializer):
+    concert = ConcertSerializer()
+    class Meta:
+        model = Artist
+        fields = ('name', 'genre', 'rating', 'concert')
 
 
 class ActivitySerializer(serializers.HyperlinkedModelSerializer):

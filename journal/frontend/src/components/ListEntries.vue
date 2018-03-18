@@ -4,23 +4,17 @@
     <h1><b>Journal Entries</b></h1>
     <ul>
       <li v-for="entry in entries" >
-        <router-link v-bind:to="'/journal/edit/' + getDate(entry.pub_date)">
+        <router-link v-bind:to="'/journal/entries/edit/' + getDate(entry.pub_date)">
           {{ getDate(entry.pub_date)}}
         </router-link>
       </li>
     </ul>
-
   </div>
 </template>
 
 <script>
   export default {
   name: 'ListEntries',
-  data () {
-    return {
-      entry: '',
-    }
-  },
   methods: {
     getDate (pub_date) {
       let date = new Date(pub_date);

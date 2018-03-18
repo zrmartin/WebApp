@@ -1,7 +1,6 @@
 <template>
   <div class="container is-fluid">
-    <DateAndSummary v-if="$store.state.entries"
-                    :pub_date=getCurrentDate()
+    <DateAndSummary :pub_date=getCurrentDate()
                     v-on:submitEntry="newEntry">
     </DateAndSummary>
   </div>
@@ -21,7 +20,7 @@
           .then(function (response) {
             console.log(response);
             vm.$store.commit('addEntry', response.data);
-            vm.$router.push('/journal');
+            vm.$router.push('/journal/entries');
           })
           .catch(function (error) {
             vm.error = true;

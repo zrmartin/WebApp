@@ -12,15 +12,18 @@ import ListEntries from './components/ListEntries'
 import CreateEntry from './components/CreateEntry'
 import EditEntry from './components/EditEntry'
 
+import ListConcerts from './components/ListConcerts'
+
 
 Vue.prototype.moment = moment;
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 
 const routes = [
-  { path: '/journal', component: ListEntries},
-  { path: '/journal/new', component: CreateEntry},
-  { path: '/journal/edit/:month/:day/:year', component: EditEntry}
+  { path: '/journal/entries', component: ListEntries},
+  { path: '/journal/entries/new', component: CreateEntry},
+  { path: '/journal/entries/edit/:month/:day/:year', component: EditEntry},
+  { path: '/journal/concerts', component: ListConcerts},
 ];
 
 const router = new VueRouter({
