@@ -27,8 +27,6 @@ class Artist(models.Model):
         return str(self.name)
 
 
-
-
 class Activity(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     activity_name = models.CharField(max_length=200)
