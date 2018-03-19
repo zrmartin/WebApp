@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
-import moment from 'moment'
 import 'bulma/css/bulma.css'
 import 'font-awesome/css/font-awesome.css'
 
@@ -14,8 +13,8 @@ import EditEntry from './components/EditEntry'
 
 import ListConcerts from './components/ListConcerts'
 import CreateConcert from './components/CreateConcert'
+import EditConcert from './components/EditConcert'
 
-Vue.prototype.moment = moment;
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 
@@ -25,6 +24,7 @@ const routes = [
   { path: '/journal/entries/edit/:month/:day/:year', component: EditEntry},
   { path: '/journal/concerts', component: ListConcerts},
   { path: '/journal/concerts/new', component: CreateConcert},
+  { path: '/journal/concerts/edit/:month/:day/:year', component: EditConcert},
 
 ];
 

@@ -31,6 +31,16 @@ class ConcertList(generics.ListAPIView):
 class ConcertCreate(generics.CreateAPIView):
     serializer_class = ConcertSerializer
 
+class ConcertUpdate(generics.UpdateAPIView):
+    queryset = Concert.objects.all()
+    serializer_class = ConcertSerializer
+    lookup_field = 'date'
+
+class ConcertDelete(generics.DestroyAPIView):
+    queryset = Concert.objects.all()
+    serializer_class = ConcertSerializer
+    lookup_field = 'date'
+
 # ***** ARTIST ***** #
 class ArtistList(generics.ListAPIView):
     queryset = Artist.objects.all()

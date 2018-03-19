@@ -72,8 +72,6 @@
         let vm = this;
         let d1 = new Date(vm.date);
         let d_edit = new Date(vm.prop_date);
-        console.log(d1, d_edit)
-        console.log(this.$store.state.concerts)
         for (let concert in this.$store.state.concerts) {
           let d2 = new Date(this.$store.state.concerts[concert].date);
           // If the two dates match, must check if we are on create or edit page

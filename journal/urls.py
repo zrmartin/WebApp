@@ -9,6 +9,8 @@ urlpatterns = [
     path('entry/delete/<pub_date>', views.EntryDelete.as_view()),
     path('concert', views.ConcertList.as_view()),
     path('concert/create', views.ConcertCreate.as_view()),
+    path('concert/update/<date>', views.ConcertUpdate.as_view()),
+    path('concert/delete/<date>', views.ConcertDelete.as_view()),
     path('artist', views.ArtistList.as_view()),
 
 

@@ -5,7 +5,7 @@
     <ul>
       <li v-for="concert in concerts" >
         <router-link v-bind:to="'/journal/concerts/edit/' + getDate(concert.date)">
-          {{ concert.name + " | " + concert.venue + " - " + concert.date }}
+          {{ concert.name + " | " + concert.venue + " - " + getDate(concert.date) }}
         </router-link>
         <ul>
           <li v-for="artist in artists" >

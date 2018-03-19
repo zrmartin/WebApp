@@ -2,7 +2,7 @@
   <div class="container is-fluid">
     <EntryForm v-if="$store.state.entries"
                     :pub_date=getEntryDate()
-                    :summary=getEntrySummary(getEntryDate())
+                    :summary=entry[1].summary
                     @submitEntry="editEntry"
                     @deleteEntry="removeEntry">
     </EntryForm>
@@ -19,42 +19,38 @@
     data(){
       let vm = this;
       return {
-        remove: false,
-        oldDate: vm.getEntryDate(),
+        entry: undefined,
+        date: vm.getEntryDate(),
       }
     },
     methods: {
       editEntry(entry) {
         let vm = this;
-        let index = vm.getEntry(vm.oldDate)[0];
+        let index = vm.entry[0];
         let data = {
           index,
           updatedEntry: entry
         };
-        axios.put(api + '/journal/entry/update/' + vm.oldDate, entry)
+        axios.put(api + '/journal/entry/update/' + vm.date, entry)
           .then(response => {
             console.log(response);
             vm.$store.commit('editEntry', data);
             vm.$router.push('/journal/entries');
           })
           .catch(error => {
-            vm.error = true;
-            vm.error_message = (error.response);
+            console.log(error);
           })
       },
-      removeEntry(pub_date) {
+      removeEntry() {
         let vm = this;
-        let store_entry = vm.getEntry(pub_date)[1];
-        let index = this.$store.state.entries.indexOf(store_entry);
-        axios.delete(api + '/journal/entry/delete/' + pub_date, store_entry)
+        axios.delete(api + '/journal/entry/delete/' + vm.date, vm.entry[1])
           .then(response => {
             console.log(response);
-            vm.$store.commit('deleteEntry', index);
+            vm.$store.commit('deleteEntry', vm.entry[0]);
             vm.$router.push('/journal/entries');
           })
           .catch(error => {
-            vm.error = true;
-            vm.error_message = (error.response);
+            console.log(error)
           })
 
       },
@@ -82,14 +78,17 @@
         }
         return (yyyy + '-' + mm + '-' + dd);
       },
-      getEntrySummary(date) {
-        return this.getEntry(date)[1].summary;
-      },
     },
     created () {
       let vm = this;
       if (this.$store.state.entries === null) {
-        this.$store.dispatch('fetchEntries');
+        this.$store.dispatch('fetchEntries')
+          .then(() =>  {
+            vm.entry = vm.getEntry(vm.getEntryDate());
+          })
+      }
+      else {
+        vm.entry = vm.getEntry(vm.getEntryDate());
       }
     },
     components: {

@@ -38,6 +38,12 @@ export const store = new Vuex.Store({
     addConcert(state, concert) {
       state.concerts.push(concert)
     },
+    editConcert(state, data) {
+      Vue.set(state.concerts, data.index, data.updatedConcert);
+    },
+    deleteConcert(state, concert_index) {
+      state.concerts.splice(concert_index, 1);
+    },
     // ****** ARTISTS ***** //
     setArtists(state, artists) {
       state.artists = [];
