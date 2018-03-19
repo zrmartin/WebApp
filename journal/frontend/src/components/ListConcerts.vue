@@ -9,7 +9,7 @@
         </router-link>
         <ul>
           <li v-for="artist in artists" >
-            <template v-if="concert.date === artist.concert.date">
+            <template v-if="getDate(concert.date) === getDate(artist.concert.date)">
               {{ artist.name }}
             </template>
           </li>
