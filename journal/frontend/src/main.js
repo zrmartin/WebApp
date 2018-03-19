@@ -13,7 +13,7 @@ import CreateEntry from './components/CreateEntry'
 import EditEntry from './components/EditEntry'
 
 import ListConcerts from './components/ListConcerts'
-
+import CreateConcert from './components/CreateConcert'
 
 Vue.prototype.moment = moment;
 Vue.config.productionTip = false;
@@ -24,6 +24,8 @@ const routes = [
   { path: '/journal/entries/new', component: CreateEntry},
   { path: '/journal/entries/edit/:month/:day/:year', component: EditEntry},
   { path: '/journal/concerts', component: ListConcerts},
+  { path: '/journal/concerts/new', component: CreateConcert},
+
 ];
 
 const router = new VueRouter({

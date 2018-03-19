@@ -35,6 +35,9 @@ export const store = new Vuex.Store({
         Vue.set(state.concerts, concert, concerts[concert]);
       }
     },
+    addConcert(state, concert) {
+      state.concerts.push(concert)
+    },
     // ****** ARTISTS ***** //
     setArtists(state, artists) {
       state.artists = [];

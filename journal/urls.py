@@ -8,6 +8,7 @@ urlpatterns = [
     path('entry/update/<pub_date>', views.EntryUpdate.as_view()),
     path('entry/delete/<pub_date>', views.EntryDelete.as_view()),
     path('concert', views.ConcertList.as_view()),
+    path('concert/create', views.ConcertCreate.as_view()),
     path('artist', views.ArtistList.as_view()),
 
 

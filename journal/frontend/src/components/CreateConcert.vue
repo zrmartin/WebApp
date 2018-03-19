@@ -1,26 +1,26 @@
 <template>
   <div class="container is-fluid">
-    <EntryForm :pub_date=getCurrentDate()
-               v-on:submitEntry="newEntry">
-    </EntryForm>
+    <ConcertForm v-on:submitConcert="newConcert"
+                 :prop_date=getCurrentDate()>
+    </ConcertForm>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
-  import EntryForm from './EntryForm'
+  import ConcertForm from './ConcertForm'
   const api = "http://localhost:8000";
 
   export default {
-    name: "CreateEntry",
+    name: "CreateConcert",
     methods: {
-      newEntry(form) {
+      newConcert(concert) {
         let vm = this;
-        axios.post(api + '/journal/entry/create', form)
+        axios.post(api + '/journal/concert/create', concert)
           .then(function (response) {
             console.log(response);
-            vm.$store.commit('addEntry', response.data);
-            vm.$router.push('/journal/entries');
+            vm.$store.commit('addConcert', response.data);
+            vm.$router.push('/journal/concerts');
           })
           .catch(function (error) {
             console.log(error);
@@ -42,17 +42,18 @@
         return (yyyy + '-' + mm + '-' + dd);
       },
     },
-    created () {
+    created() {
       let vm = this;
-      if (this.$store.state.entries === null) {
-        this.$store.dispatch('fetchEntries');
+      if (this.$store.state.concerts === null) {
+        this.$store.dispatch('fetchConcerts');
       }
     },
     components: {
-      EntryForm,
+      ConcertForm,
     }
-
   }
+
+
 </script>
 
 <style scoped>

@@ -1,17 +1,17 @@
 <template>
   <div class="container is-fluid">
-    <DateAndSummary v-if="$store.state.entries"
+    <EntryForm v-if="$store.state.entries"
                     :pub_date=getEntryDate()
                     :summary=getEntrySummary(getEntryDate())
                     @submitEntry="editEntry"
                     @deleteEntry="removeEntry">
-    </DateAndSummary>
+    </EntryForm>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
-  import DateAndSummary from './DateAndSummary'
+  import EntryForm from './EntryForm'
   const api = "http://localhost:8000";
 
   export default {
@@ -42,11 +42,11 @@
             vm.error_message = (error.response);
           })
       },
-      removeEntry(entry) {
+      removeEntry(pub_date) {
         let vm = this;
-        let store_entry = vm.getEntry(entry.pub_date)[1];
+        let store_entry = vm.getEntry(pub_date)[1];
         let index = this.$store.state.entries.indexOf(store_entry);
-        axios.delete(api + '/journal/entry/delete/' + entry.pub_date, store_entry)
+        axios.delete(api + '/journal/entry/delete/' + pub_date, store_entry)
           .then(response => {
             console.log(response);
             vm.$store.commit('deleteEntry', index);
@@ -93,7 +93,7 @@
       }
     },
     components: {
-      DateAndSummary,
+      EntryForm,
     }
 
   }

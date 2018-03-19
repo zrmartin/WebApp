@@ -3,7 +3,6 @@ from rest_framework import serializers
 
 class EntrySerializer(serializers.HyperlinkedModelSerializer):
     pub_date_errors = {"unique" : "Date must be unique", "invalid": "Invalid date"}
-
     pub_date = serializers.DateField(format="%m/%d/%Y", error_messages=pub_date_errors)
 
     class Meta:
@@ -11,6 +10,7 @@ class EntrySerializer(serializers.HyperlinkedModelSerializer):
         fields = ('pub_date', 'summary')
 
 class ConcertSerializer(serializers.HyperlinkedModelSerializer):
+    date_errors = {"unique" : "Date must be unique", "invalid": "Invalid date"}
     date = serializers.DateField(format="%m/%d/%Y")
 
     class Meta:

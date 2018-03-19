@@ -35,13 +35,12 @@
       </div>
     </div>
 
-
   </div>
 </template>
 
 <script>
   export default {
-    name: "CreateEntry",
+    name: "EntryForm",
     data(){
       return {
         date: this.pub_date,
@@ -65,8 +64,8 @@
             // Edit: Error occurs if current selected date matches any existing date besides the date of the entry we are editing
             if (!(d_edit.getFullYear() === d2.getFullYear() && d_edit.getMonth() === d2.getMonth() &&
                 d_edit.getUTCDate() === d2.getUTCDate()) || vm.$route.params.day === undefined) {
-                  vm.errors.pub_date_duplicate = 'Entry already exists for this date.';
-                  break;
+              vm.errors.pub_date_duplicate = 'Entry already exists for this date.';
+              break;
             }
           }
           else vm.errors.pub_date_duplicate = '';
@@ -85,9 +84,7 @@
       },
       deleteEntry() {
         let vm = this;
-        vm.$emit('deleteEntry', {
-          pub_date: vm.date,
-          summary: vm.summ});
+        vm.$emit('deleteEntry', vm.date);
       },
 
     },
@@ -98,7 +95,7 @@
         vm.checkDateDuplicate();
       }
     },
-    created (){
+    created () {
       let vm = this;
       vm.checkDateDuplicate();
     },
