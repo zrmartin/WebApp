@@ -21,7 +21,7 @@ class Artist(models.Model):
     name = models.CharField(max_length=100)
     genre = models.CharField(max_length=100)
     rating = models.SmallIntegerField()
-    concert = models.ForeignKey('Concert', on_delete=models.CASCADE)
+    concert = models.ForeignKey('Concert', related_name='concert', on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.name)

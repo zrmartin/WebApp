@@ -29,11 +29,6 @@
       return this.$store.state.entries;
     }
   },
-  created() {
-    if (this.$store.state.entries === null) {
-      this.$store.dispatch('fetchEntries');
-    }
-  },
 }
 </script>
 

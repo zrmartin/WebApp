@@ -47,6 +47,11 @@ class ArtistList(generics.ListAPIView):
     serializer_class = ArtistSerializer
     lookup_field = 'date'
 
+class ArtistCreate(generics.CreateAPIView):
+    serializer_class = ArtistSerializer
+
+
+
 
 
 

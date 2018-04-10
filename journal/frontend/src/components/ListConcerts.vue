@@ -40,12 +40,6 @@
       return this.$store.state.artists;
     }
   },
-  created() {
-    if (this.$store.state.concerts === null) {
-      this.$store.dispatch('fetchConcerts');
-      this.$store.dispatch('fetchArtists');
-    }
-  },
 }
 </script>
 

@@ -1,7 +1,9 @@
 <template>
   <div class="container is-fluid">
     <ConcertForm v-on:submitConcert="newConcert"
-                 :prop_date=getCurrentDate()>
+                 :prop_date=getCurrentDate()
+                 :prop_artists=[]
+                 :prop_first = true>
     </ConcertForm>
   </div>
 </template>
@@ -14,17 +16,31 @@
   export default {
     name: "CreateConcert",
     methods: {
-      newConcert(concert) {
+      newConcert(concert, artists) {
         let vm = this;
         axios.post(api + '/journal/concert/create', concert)
           .then(function (response) {
-            console.log(response);
+            console.log(response.data);
             vm.$store.commit('addConcert', response.data);
-            vm.$router.push('/journal/concerts');
+            for (let artist in artists) {
+              axios.post(api + '/journal/artist/create', {
+                name: artists[artist]['name'],
+                genre: artists[artist]['genre'],
+                rating: artists[artist]['rating'],
+                concert: concert})
+                .then(function (response) {
+                  vm.$store.commit('addArtist', response.data);
+                })
+                .catch(function (error) {
+                  console.log(error);
+                })
+            }
           })
           .catch(function (error) {
             console.log(error);
-          })
+          });
+        vm.$router.push('/journal/concerts');
+
       },
       getCurrentDate() {
         let vm = this;
@@ -41,12 +57,6 @@
         }
         return (yyyy + '-' + mm + '-' + dd);
       },
-    },
-    created() {
-      let vm = this;
-      if (this.$store.state.concerts === null) {
-        this.$store.dispatch('fetchConcerts');
-      }
     },
     components: {
       ConcertForm,

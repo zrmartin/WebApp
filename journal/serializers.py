@@ -23,11 +23,19 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         model = Artist
         fields = ('name', 'genre', 'rating', 'concert')
 
+    def create(self, validated_data):
+        concert_dict = validated_data.pop('concert')
+        concert = Concert.objects.get(name=concert_dict['name'])
+        artist = Artist.objects.create(concert = concert, **validated_data)
+        return artist
+
 
 class ActivitySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Activity
         fields = ('entry', 'activity_name',)
+
+
 
 
 

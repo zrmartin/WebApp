@@ -1,10 +1,12 @@
 <template>
   <div class="container is-fluid">
-    <ConcertForm v-if="$store.state.concerts && concert"
+    <ConcertForm v-if="$store.state.concerts && concert && artists"
                     :prop_date=getConcertDate()
                     :prop_name=concert[1].name
                     :prop_venue=concert[1].venue
                     :prop_notes=concert[1].notes
+                    :prop_artists=artists
+                    :prop_first = false
                     @submitConcert="editConcert"
                     @deleteConcert="removeConcert">
     </ConcertForm>
@@ -22,6 +24,7 @@
       let vm = this;
       return {
         concert: undefined,
+        artists: undefined,
         date: vm.getConcertDate(),
       }
     },
@@ -67,6 +70,16 @@
           }
           return undefined;
       },
+      getArtists(concert) {
+        let vm = this;
+        let artists = [];
+        for (let artist in this.$store.state.artists) {
+          if (this.$store.state.artists[artist].concert.date === concert[1].date) {
+            artists.push(this.$store.state.artists[artist]);
+          }
+        }
+        return artists;
+      },
       getConcertDate() {
         let vm = this;
         let dd = vm.$route.params.day;
@@ -86,11 +99,13 @@
       if (this.$store.state.concerts === null) {
         this.$store.dispatch('fetchConcerts')
           .then(() => {
-            vm.concert = vm.getConcert(vm.getConcertDate())
+            vm.concert = vm.getConcert(vm.getConcertDate());
+            vm.artists = vm.getArtists(vm.concert);
           });
       }
       else {
-        vm.concert = vm.getConcert(vm.getConcertDate())
+        vm.concert = vm.getConcert(vm.getConcertDate());
+        vm.artists = vm.getArtists(vm.concert);
       }
     },
     components: {

@@ -12,8 +12,7 @@ urlpatterns = [
     path('concert/update/<date>', views.ConcertUpdate.as_view()),
     path('concert/delete/<date>', views.ConcertDelete.as_view()),
     path('artist', views.ArtistList.as_view()),
-
-
+    path('artist/create', views.ArtistCreate.as_view()),
 
 ]
 

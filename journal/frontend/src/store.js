@@ -36,12 +36,18 @@ export const store = new Vuex.Store({
       }
     },
     addConcert(state, concert) {
-      state.concerts.push(concert)
+      state.concerts.push(concert);
     },
     editConcert(state, data) {
       Vue.set(state.concerts, data.index, data.updatedConcert);
     },
     deleteConcert(state, concert_index) {
+      let concert = state.concerts[concert_index];
+      for (let artist in state.artists) {
+        if (state.artists[artist].concert.date === concert.date) {
+          state.artists.splice(artist, 1);
+        }
+      }
       state.concerts.splice(concert_index, 1);
     },
     // ****** ARTISTS ***** //
@@ -50,6 +56,9 @@ export const store = new Vuex.Store({
       for (let artist in artists) {
         Vue.set(state.artists, artist, artists[artist])
       }
+    },
+    addArtist(state, artist) {
+      state.artists.push(artist);
     },
 
   },

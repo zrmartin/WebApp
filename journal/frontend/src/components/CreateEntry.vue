@@ -42,12 +42,6 @@
         return (yyyy + '-' + mm + '-' + dd);
       },
     },
-    created () {
-      let vm = this;
-      if (this.$store.state.entries === null) {
-        this.$store.dispatch('fetchEntries');
-      }
-    },
     components: {
       EntryForm,
     }
