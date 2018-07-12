@@ -14,11 +14,11 @@ export default {
     Navbar
   },
     created() {
-    if (this.$store.state.entries === null) {
       this.$store.dispatch('fetchEntries');
       this.$store.dispatch('fetchConcerts');
       this.$store.dispatch('fetchArtists');
-    }
+      this.$store.dispatch('fetchVenues');
+      this.$store.dispatch('fetchActivities');
   },
 }
 </script>

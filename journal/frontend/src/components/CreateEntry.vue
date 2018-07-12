@@ -1,6 +1,8 @@
 <template>
   <div class="container is-fluid">
     <EntryForm :pub_date=getCurrentDate()
+               :prop_first=true
+               :prop_activities=[]
                v-on:submitEntry="newEntry">
     </EntryForm>
   </div>
@@ -14,17 +16,30 @@
   export default {
     name: "CreateEntry",
     methods: {
-      newEntry(form) {
+      newEntry(form, activities) {
         let vm = this;
         axios.post(api + '/journal/entry/create', form)
           .then(function (response) {
             console.log(response);
             vm.$store.commit('addEntry', response.data);
-            vm.$router.push('/journal/entries');
-          })
+            for (let activity in activities) {
+              axios.post(api + '/journal/activity/create', {
+                entry: form,
+                name: activities[activity].name,
+                duration: activities[activity].duration,
+              })
+                .then(function (response) {
+                  vm.$store.commit('addActivity', response.data);
+                })
+                .catch(function (error) {
+                  console.log(error);
+                })
+              }
+            })
           .catch(function (error) {
             console.log(error);
-          })
+          });
+        vm.$router.push('/journal/entries');
       },
       getCurrentDate() {
         let vm = this;

@@ -23,7 +23,20 @@
                 <a class="navbar-item">
                   <router-link v-bind:to="'/journal/concerts/new'">New Concert</router-link>
                 </a>
+                <a class="navbar-item">
+                  <router-link v-bind:to="'/journal/venues/new'">New Venue</router-link>
+                </a>
               </div>
+            </div>
+            <!-- Raw Sql Query Navbar Option -->
+            <div class="navbar-item">
+                <router-link v-bind:to="'/journal/query'">Query</router-link>
+            </div>
+
+          </div>
+          <div class="navbar-end">
+            <div class="navbar-item">
+                <b>Hello Zach</b>
             </div>
           </div>
         </div>

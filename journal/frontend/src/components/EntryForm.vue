@@ -1,40 +1,68 @@
 <template>
-  <div>
-    <div class="field">
-      <label class="label">Entry Date</label>
-      <div class="control">
-        <input class="input" type="date" v-model="date">
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <label class="label">Entry Date</label>
+        <div class="control">
+          <input class="input" type="date" v-model="date">
+        </div>
+        <div class="notification is-warning" v-if="errors.pub_date_invalid">
+          <p><b>{{ errors.pub_date_invalid }}</b></p>
+        </div>
+        <div class="notification is-warning" v-if="errors.pub_date_duplicate">
+          <p><b>{{ errors.pub_date_duplicate }}</b></p>
+        </div>
       </div>
-      <div class="notification is-warning" v-if="errors.pub_date_invalid">
-        <p><b>{{ errors.pub_date_invalid }}</b></p>
+
+      <div class="field">
+        <label class="label">Daily Summary</label>
+        <div class="control">
+          <textarea class="textarea" placeholder="Enter what you did today" v-model="summ"></textarea>
+        </div>
       </div>
-      <div class="notification is-warning" v-if="errors.pub_date_duplicate">
-        <p><b>{{ errors.pub_date_duplicate }}</b></p>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-link" v-on:click="submitEntry">Submit</button>
+        </div>
+        <div class="control">
+          <button class="button is-text"><router-link v-bind:to="'/journal/entries'">Cancel</router-link></button>
+        </div>
+      </div>
+
+      <div class="field is-grouped" v-if="summary">
+        <div class="control">
+          <button class="button is-danger" v-on:click="deleteEntry">Delete</button>
+        </div>
       </div>
     </div>
 
-    <div class="field">
-      <label class="label">Daily Summary</label>
+    <div class="column">
       <div class="control">
-        <textarea class="textarea" placeholder="Enter what you did today" v-model="summ"></textarea>
+        <button class="button is-primary is-rounded is-centered" v-on:click="addFirst" v-if="first"> + Add Activity </button>
       </div>
-    </div>
 
-    <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-link" v-on:click="submitEntry">Submit</button>
+      <div id="addArtist" v-if="!first" v-for="activity in activities">
+        <div class="field is-grouped">
+          <label class="label">Activity Name</label>
+          <div class="control">
+            <input class="input" type="text" v-model="activity.name">
+          </div>
+          <label class="label">Duration (Minutes)</label>
+          <div class="control">
+            <input class="input" type="text" v-model="activity.duration">
+          </div>
+        </div>
+        <br>
       </div>
-      <div class="control">
-        <button class="button is-text"><router-link v-bind:to="'/journal/entries'">Cancel</router-link></button>
-      </div>
-    </div>
 
-    <div class="field is-grouped" v-if="summary">
-      <div class="control">
-        <button class="button is-danger" v-on:click="deleteEntry">Delete</button>
+      <div class="field is-grouped">
+        <div class="control" v-if="!first">
+          <button class="button is-primary is-rounded is-centered" v-on:click="addMultiple"> + Add Activity </button>
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </template>
 
@@ -45,6 +73,8 @@
       return {
         date: this.pub_date,
         summ: this.summary,
+        first: this.prop_first,
+        activities: (JSON.parse(JSON.stringify(this.prop_activities))),
         errors: {
           pub_date_invalid: '',
           pub_date_duplicate: '',
@@ -78,13 +108,26 @@
       },
       submitEntry() {
         let vm = this;
+        for (let activity in vm.activities){
+          vm.activities[activity].duration = parseFloat(vm.activities[activity].duration);
+        }
         vm.$emit('submitEntry', {
           pub_date: vm.date,
-          summary: vm.summ});
+          summary: vm.summ
+        }, vm.activities);
       },
       deleteEntry() {
         let vm = this;
         vm.$emit('deleteEntry', vm.date);
+      },
+      addFirst() {
+        let vm = this;
+        vm.first = false;
+        vm.activities.push({ name: "", duration: ""});
+      },
+      addMultiple() {
+        let vm = this;
+        vm.activities.push({ name: "", duration: ""});
       },
 
     },
@@ -99,7 +142,7 @@
       let vm = this;
       vm.checkDateDuplicate();
     },
-    props: ['pub_date', 'summary']
+    props: ['pub_date', 'summary', 'prop_first', 'prop_activities']
   }
 </script>
 

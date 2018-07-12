@@ -1,8 +1,10 @@
 <template>
   <div class="container is-fluid">
-    <EntryForm v-if="$store.state.entries"
+    <EntryForm v-if="entry !== undefined"
                     :pub_date=getEntryDate()
                     :summary=entry[1].summary
+                    :prop_first=false
+                    :prop_activities=activities
                     @submitEntry="editEntry"
                     @deleteEntry="removeEntry">
     </EntryForm>
@@ -20,26 +22,43 @@
       let vm = this;
       return {
         entry: undefined,
+        activities: undefined,
         date: vm.getEntryDate(),
       }
     },
     methods: {
-      editEntry(entry) {
+      editEntry(entry, activities) {
         let vm = this;
         let index = vm.entry[0];
-        let data = {
+        let store_data = {
           index,
           updatedEntry: entry
         };
         axios.put(api + '/journal/entry/update/' + vm.date, entry)
           .then(response => {
             console.log(response);
-            vm.$store.commit('editEntry', data);
-            vm.$router.push('/journal/entries');
+            vm.$store.commit('editEntry', store_data);
+            for (let activity in activities) {
+              let activity_data = {
+                entry: entry,
+                name: activities[activity].name,
+                duration: activities[activity].duration
+              };
+              axios.put(api + '/journal/activity/update/' + vm.activities[activity].name, activity_data)
+                .then(response => {
+                  console.log(response);
+                  let store_activity = {
+                    oldActivity: vm.activities[activity],
+                    newActivity: response.data
+                  };
+                  vm.$store.commit('editActivity', store_activity);
+                })
+            }
           })
           .catch(error => {
             console.log(error);
-          })
+          });
+        vm.$router.push('/journal/entries');
       },
       removeEntry() {
         let vm = this;
@@ -65,6 +84,17 @@
           }
           return undefined;
       },
+      getActivities(entry) {
+        let activities = [];
+        let d1 = new Date(entry[1].pub_date);
+        for (let activity in this.$store.state.activities) {
+          let d2 = new Date(this.$store.state.activities[activity].entry.pub_date);
+          if (d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getUTCDate() === d2.getUTCDate()) {
+            activities.push(this.$store.state.activities[activity]);
+          }
+        }
+        return activities;
+      },
       getEntryDate() {
         let vm = this;
         let dd = vm.$route.params.day;
@@ -85,10 +115,12 @@
         this.$store.dispatch('fetchEntries')
           .then(() =>  {
             vm.entry = vm.getEntry(vm.getEntryDate());
+            vm.activities = vm.getActivities(vm.entry);
           })
       }
       else {
         vm.entry = vm.getEntry(vm.getEntryDate());
+        vm.activities = vm.getActivities(vm.entry);
       }
     },
     components: {

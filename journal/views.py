@@ -1,5 +1,5 @@
-from .models import Entry, Concert, Artist
-from.serializers import EntrySerializer, ConcertSerializer, ArtistSerializer
+from .models import Entry, Concert, Artist, Venue, Activity
+from.serializers import EntrySerializer, ConcertSerializer, ArtistSerializer, VenueSerializer, ActivitySerializer
 from rest_framework import generics
 
 # ***** ENTRY **** #
@@ -22,6 +22,19 @@ class EntryDelete(generics.DestroyAPIView):
     queryset = Entry.objects.all()
     serializer_class = EntrySerializer
     lookup_field = 'pub_date'
+
+# ***** ACTIVITY **** #
+class ActivityList(generics.ListAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+
+class ActivityCreate(generics.CreateAPIView):
+    serializer_class = ActivitySerializer
+
+class ActivityUpdate(generics.UpdateAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    lookup_field = 'name'
 
 # ***** CONCERT ***** #
 class ConcertList(generics.ListAPIView):
@@ -49,6 +62,37 @@ class ArtistList(generics.ListAPIView):
 
 class ArtistCreate(generics.CreateAPIView):
     serializer_class = ArtistSerializer
+
+class ArtistUpdate(generics.UpdateAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+    lookup_field = 'name'
+
+class VenueList(generics.ListAPIView):
+    queryset = Venue.objects.all()
+    serializer_class = VenueSerializer
+
+class VenueCreate(generics.CreateAPIView):
+    serializer_class = VenueSerializer
+
+class VenueUpdate(generics.UpdateAPIView):
+    queryset = Venue.objects.all()
+    serializer_class = VenueSerializer
+    lookup_field = 'name'
+
+class VenueDelete(generics.DestroyAPIView):
+    queryset = Venue.objects.all()
+    serializer_class = VenueSerializer
+    lookup_field = 'name'
+
+class RawSQLQuery1(generics.ListAPIView):
+    queryset = Venue.objects.raw('SELECT * FROM venue')
+    serializer_class = VenueSerializer
+
+class RawSQLQuery2(generics.ListAPIView):
+    queryset = Concert.objects.all()
+    serializer_class = ConcertSerializer
+
 
 
 

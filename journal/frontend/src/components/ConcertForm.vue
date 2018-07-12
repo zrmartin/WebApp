@@ -23,8 +23,10 @@
 
       <div class="field">
         <label class="label">Venue</label>
-        <div class="control">
-          <input class="input" type="text" v-model="venue">
+        <div class="select">
+          <select v-model="venue">
+            <option v-for="venue in venues">{{venue.name}}</option>
+          </select>
         </div>
       </div>
 
@@ -88,10 +90,11 @@
             </div>
           </div>
         </div>
-
+        <br>
       </div>
 
       <div class="field">
+        <br>
         <div class="control" v-if="!first && name && venue">
           <button class="button is-primary is-rounded is-centered" v-on:click="addMultiple"> + Add Artist </button>
         </div>
@@ -103,6 +106,7 @@
 </template>
 
 <script>
+  import Vue from 'vue';
   export default {
     name: "ConcertForm",
     data(){
@@ -112,7 +116,7 @@
         venue: this.prop_venue,
         notes: this.prop_notes,
         first: this.prop_first,
-        artists: this.prop_artists,
+        artists: (JSON.parse(JSON.stringify(this.prop_artists))),
         errors: {
           pub_date_invalid: '',
           pub_date_duplicate: '',
@@ -130,8 +134,7 @@
           if (d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getUTCDate() === d2.getUTCDate()) {
             // Create: Error occurs if current selected date matches any existing dates
             // Edit: Error occurs if current selected date matches any existing date besides the date of the concert we are editing
-            if (!(d_edit.getFullYear() === d2.getFullYear() && d_edit.getMonth() === d2.getMonth() &&
-                d_edit.getUTCDate() === d2.getUTCDate()) || vm.$route.params.day === undefined) {
+            if (!(d_edit.getFullYear() === d2.getFullYear() && d_edit.getMonth() === d2.getMonth() && d_edit.getUTCDate() === d2.getUTCDate()) || vm.$route.params.day === undefined) {
                   vm.errors.pub_date_duplicate = 'Concert already exists for this date.';
                   break;
             }
@@ -149,9 +152,9 @@
         vm.$emit('submitConcert', {
           date: vm.date,
           name: vm.name,
-          venue: vm.venue,
           notes: vm.notes,
-        }, vm.artists);
+        },  vm.artists,
+            vm.venue);
       },
       deleteConcert() {
         let vm = this;
@@ -165,13 +168,18 @@
       addMultiple() {
         let vm = this;
         vm.artists.push({ name: " ", genre: "", rating: 0});
-      }
+      },
     },
     watch: {
       'date': function() {
         let vm = this;
         vm.checkValidDate();
         vm.checkDateDuplicate();
+      }
+    },
+    computed: {
+      venues() {
+        return this.$store.state.venues;
       }
     },
     created () {

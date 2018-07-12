@@ -1,14 +1,25 @@
 
 <template>
   <div class="container is-fluid">
-    <h1><b>Journal Entries</b></h1>
+    <h1><b><u>Entries</u></b></h1>
     <ul>
       <li v-for="entry in entries" >
         <router-link v-bind:to="'/journal/entries/edit/' + getDate(entry.pub_date)">
-          {{ getDate(entry.pub_date)}}
+          {{"Date Published: "  + getDate(entry.pub_date)}}
         </router-link>
+        <ul>
+          <li><b>Summary: </b>  {{entry.summary}}</li>
+          <li>Activities:</li>
+          <li v-for="activity in activities">
+            <template v-if="getDate(entry.pub_date) === getDate(activity.entry['pub_date'])">
+              {{activity.name + " for " + activity.duration + " Minutes"}}
+            </template>
+        </li>
+        </ul>
+        <br>
       </li>
     </ul>
+
   </div>
 </template>
 
@@ -27,6 +38,9 @@
   computed: {
     entries() {
       return this.$store.state.entries;
+    },
+    activities() {
+      return this.$store.state.activities;
     }
   },
 }

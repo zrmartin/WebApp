@@ -16,9 +16,19 @@
   export default {
     name: "CreateConcert",
     methods: {
-      newConcert(concert, artists) {
+      newConcert(concert, artists, venue) {
         let vm = this;
-        axios.post(api + '/journal/concert/create', concert)
+        axios.post(api + '/journal/concert/create', {
+          date: concert['date'],
+          name: concert['name'],
+          notes: concert['notes'],
+          venue: {
+            name: venue,
+            state: "blah",
+            city: "blah",
+            style: "blah",
+          }
+        })
           .then(function (response) {
             console.log(response.data);
             vm.$store.commit('addConcert', response.data);
@@ -27,13 +37,23 @@
                 name: artists[artist]['name'],
                 genre: artists[artist]['genre'],
                 rating: artists[artist]['rating'],
-                concert: concert})
-                .then(function (response) {
-                  vm.$store.commit('addArtist', response.data);
-                })
-                .catch(function (error) {
-                  console.log(error);
-                })
+                concert: {
+                  date: concert['date'],
+                  name: concert['name'],
+                  notes: concert['notes'],
+                  venue: {
+                    name: "blah",
+                    state: "blah",
+                    city: "blah",
+                    style: "blah"
+                  }
+                }})
+                  .then(function (response) {
+                    vm.$store.commit('addArtist', response.data);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  })
             }
           })
           .catch(function (error) {

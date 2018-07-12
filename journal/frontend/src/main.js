@@ -15,6 +15,11 @@ import ListConcerts from './components/ListConcerts'
 import CreateConcert from './components/CreateConcert'
 import EditConcert from './components/EditConcert'
 
+import CreateVenue from './components/CreateVenue'
+import EditVenue from './components/EditVenue'
+
+import Query from './components/Query'
+
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 
@@ -25,6 +30,9 @@ const routes = [
   { path: '/journal/concerts', component: ListConcerts},
   { path: '/journal/concerts/new', component: CreateConcert},
   { path: '/journal/concerts/edit/:month/:day/:year', component: EditConcert},
+  { path: '/journal/venues/new', component: CreateVenue},
+  { path: '/journal/venues/edit/:name', component: EditVenue},
+  { path: '/journal/query', component: Query},
 
 ];
 
